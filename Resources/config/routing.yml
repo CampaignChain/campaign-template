@@ -1,0 +1,40 @@
+# This file is part of the CampaignChain package.
+#
+# (c) Sandro Groganz <sandro@campaignchain.com>
+#
+# For the full copyright and license information, please view the LICENSE
+# file that was distributed with this source code.
+
+campaignchain_campaign_template:
+    pattern:  /campaigns/template
+    defaults: { _controller: CampaignChainCampaignTemplateBundle:Template:index }
+
+campaignchain_campaign_template_new:
+    pattern:  /campaign/template/new
+    defaults: { _controller: CampaignChainCampaignTemplateBundle:Template:new }
+
+campaignchain_campaign_template_edit:
+    pattern:  /campaign/template/{id}/edit
+    defaults: { _controller: CampaignChainCampaignTemplateBundle:Template:edit }
+
+campaignchain_campaign_template_edit_modal:
+    pattern:  /modal/campaign/template/{id}/edit
+    defaults: { _controller: CampaignChainCampaignTemplateBundle:Template:editModal }
+
+campaignchain_campaign_template_edit_api:
+    pattern:  /api/private/campaign/template/{id}/edit
+    defaults: { _controller: CampaignChainCampaignTemplateBundle:Template:editApi }
+    options:
+        expose: true
+
+#campaignchain_campaign_template_plan_timeline:
+#    pattern:  /campaign/template/plan/timeline
+#    defaults: { _controller: CampaignChainCampaignTemplateBundle:Plan:timeline }
+#
+#campaignchain_campaign_template_plan_timeline_fullscreen:
+#    pattern:  /campaign/template/plan/timeline/fullscreen
+#    defaults: { _controller: CampaignChainCampaignTemplateBundle:Plan:timelineFullScreen }
+
+campaignchain_campaign_template_plan_timeline_detail:
+    pattern:  /campaign/template/plan/timeline/{id}
+    defaults: { _controller: CampaignChainCampaignTemplateBundle:Plan:timelineDetail }

@@ -1,0 +1,14 @@
+
+modules:
+    campaignchain-template:
+        display_name: Campaign Template
+        description: Create re-usable templates of campaigns.
+        routes:
+            new: campaignchain_campaign_template_new
+            edit: campaignchain_campaign_template_edit
+            edit_modal: campaignchain_campaign_template_edit_modal
+            edit_api: campaignchain_campaign_template_edit_api
+            plan: campaignchain_campaign_template
+            plan_detail: campaignchain_campaign_template_plan_timeline_detail
+        hooks:
+            campaignchain-timespan: true

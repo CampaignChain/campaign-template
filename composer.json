@@ -1,0 +1,33 @@
+{
+    "name": "campaignchain/campaign-template",
+    "description": "Create re-usable templates of campaigns.",
+    "type": "campaignchain-campaign",
+    "license": "Apache-2.0",
+    "homepage": "http://www.campaignchain.com",
+    "authors": [
+        {
+            "name": "Sandro Groganz",
+            "email": "sandro@campaignchain.com"
+        }
+    ],
+    "require": {
+    },
+    "autoload": {
+        "psr-4": { "CampaignChain\\Campaign\\TemplateBundle\\": "" }
+    },
+    "extra": {
+        "campaignchain": {
+            "kernel": {
+                "classes": [
+                    "CampaignChain\\Campaign\\TemplateBundle\\CampaignChainCampaignTemplateBundle"
+                ],
+                "routing":
+                {
+                    "name": "campaignchain_campaign_template",
+                    "resource": "@CampaignChainCampaignTemplateBundle/Resources/config/routing.yml",
+                    "prefix": "/"
+                }
+            }
+        }
+    }
+}

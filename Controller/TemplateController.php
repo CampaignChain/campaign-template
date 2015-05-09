@@ -55,6 +55,8 @@ class TemplateController extends Controller
         $campaign = new Campaign();
         $campaign->setTimezone($this->get('session')->get('campaignchain.timezone'));
         $campaign->setStatus(Action::STATUS_PAUSED);
+        // A campaign template does not have absolute dates.
+        $campaign->setHasRelativeDates(true);
 
         $campaignType = $this->get('campaignchain.core.form.type.campaign');
         $campaignType->setBundleName(self::BUNDLE_NAME);

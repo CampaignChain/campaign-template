@@ -9,6 +9,48 @@ file that was distributed with this source code.
 
 {% extends 'CampaignChainCoreBundle:Base:base.html.twig' %}
 
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts '@dhtmlxgantt_js' combine=true %}
+    <!-- @dhtmlxgantt_js --><script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    {% javascripts '@dhtmlxgantt_tooltip_js' combine=true %}
+    <!-- @dhtmlxgantt_tooltip_js --><script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    {% stylesheets '@dhtmlxgantt_css' combine=true %}
+    <link href="{{ asset_url }}" type="text/css" rel="stylesheet" />
+    {% endstylesheets %}
+{% endblock %}
+
 {% block body %}
-    {% include 'CampaignChainCoreBundle:Plan/Timeline:inline.html.twig' %}
+    {% set gantt_toolbar_status = 'inline' %}
+
+    {% javascripts '@campaignchain_dhtmlxgantt_pre_init_relative_dates_js' combine=true %}
+    <!-- pre init --><script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    {% include 'CampaignChainCoreBundle:Plan/Timeline:toolbar.html.twig' %}
+
+    <div id="gantt_here" style='width:100%; height:600px;'></div>
+
+    <script type="text/javascript">
+        var tasks = {{ gantt_tasks|raw }}
+                gantt.init("gantt_here");
+    </script>
+
+    {% javascripts '@campaignchain_dhtmlxgantt_post_init_relative_dates_js' combine=true %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    <script type="text/javascript">
+        gantt.parse (tasks);
+    </script>
+
+    {% include 'CampaignChainCoreBundle:Base:modal_remote.html.twig' %}
 {% endblock %}

@@ -57,6 +57,8 @@ class TemplateController extends Controller
         $campaign->setStatus(Action::STATUS_PAUSED);
         // A campaign template does not have absolute dates.
         $campaign->setHasRelativeDates(true);
+        // All campaign templates start Jan 1st, 2012 midnight.
+        $campaign->setStartDate(new \DateTime('2012-01-01 00:00:00'));
 
         $campaignType = $this->get('campaignchain.core.form.type.campaign');
         $campaignType->setBundleName(self::BUNDLE_NAME);

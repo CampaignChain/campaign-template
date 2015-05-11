@@ -37,28 +37,4 @@ class PlanController extends Controller
                 'path_fullscreen' =>  '',
             ));
     }
-
-//    public function timelineAction(){
-//        return $this->render(
-//            'CampaignChainCoreBundle:Plan/Timeline:index.html.twig',
-//            array(
-//                'page_title' => 'Plan Campaign Templates',
-//                'gantt_tasks' => $this->get('campaignchain.core.model.dhtmlxgantt')->getTasks(),
-//                'gantt_toolbar_status' => 'default',
-//                'path_embedded' => $this->generateUrl('campaignchain_campaign_template_plan_timeline'),
-//                'path_fullscreen' =>  $this->generateUrl('campaignchain_campaign_template_plan_timeline_fullscreen'),
-//            ));
-//    }
-//
-//    public function timelineFullScreenAction(){
-//        return $this->render(
-//            'CampaignChainCoreBundle:Plan/Timeline:fullscreen.html.twig',
-//            array(
-//                'page_title' => 'Plan Campaign Templates',
-//                'gantt_tasks' => $this->get('campaignchain.core.model.dhtmlxgantt')->getTasks(),
-//                'gantt_toolbar_status' => 'fullscreen',
-//                'path_fullscreen_close' => $this->generateUrl('campaignchain_campaign_template_plan_timeline'),
-//                'path_fullscreen' =>  $this->generateUrl('campaignchain_campaign_template_plan_timeline_fullscreen'),
-//            ));
-//    }
 }

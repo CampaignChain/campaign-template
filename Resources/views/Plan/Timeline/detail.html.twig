@@ -32,6 +32,7 @@ file that was distributed with this source code.
     {% set gantt_toolbar_status = 'inline' %}
     <script type="text/javascript">
         var campaign_start_date = moment('{{ scale_start_date }}', moment.ISO_8601);
+        var campaign_end_date = moment('{{ scale_end_date }}', moment.ISO_8601);
     </script>
 
     {% javascripts '@campaignchain_dhtmlxgantt_pre_init_relative_dates_js' combine=true %}

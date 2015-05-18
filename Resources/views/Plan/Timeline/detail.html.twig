@@ -30,18 +30,29 @@ file that was distributed with this source code.
 
 {% block body %}
     {% set gantt_toolbar_status = 'inline' %}
+    <script type="text/javascript">
+        var campaign_start_date = moment('{{ scale_start_date }}', moment.ISO_8601);
+    </script>
 
     {% javascripts '@campaignchain_dhtmlxgantt_pre_init_relative_dates_js' combine=true %}
     <!-- pre init --><script src="{{ asset_url }}"></script>
     {% endjavascripts %}
 
-    {% include 'CampaignChainCoreBundle:Plan/Timeline:toolbar.html.twig' %}
+    {% include 'CampaignChainCampaignTemplateBundle:Plan/Timeline:toolbar.html.twig' %}
 
     <div id="gantt_here" style='width:100%; height:600px;'></div>
 
     <script type="text/javascript">
         var tasks = {{ gantt_tasks|raw }}
-                gantt.init("gantt_here");
+                gantt.init(
+                    "gantt_here"/*,
+                    campaignchainGetUserDateTime(
+                        moment('{{ scale_start_date }}', moment.ISO_8601)
+                    ),
+                    campaignchainGetUserDateTime(
+                            moment('{{ scale_end_date }}', moment.ISO_8601)
+                    )*/
+                );
     </script>
 
     {% javascripts '@campaignchain_dhtmlxgantt_post_init_relative_dates_js' combine=true %}

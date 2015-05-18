@@ -173,7 +173,7 @@ class TemplateController extends Controller
 
         $data = $request->get('campaignchain_core_campaign');
 
-        $responseData['data'] = $data;
+        //$responseData['payload'] = $data;
 
         $campaignService = $this->get('campaignchain.core.campaign');
         $campaign = $campaignService->getCampaign($id);
@@ -187,6 +187,10 @@ class TemplateController extends Controller
         $hookService->processHooks(self::BUNDLE_NAME, self::MODULE_IDENTIFIER, $campaign, $data);
 
         $repository->flush();
+
+        $responseData['start_date'] = $campaign->getStartDate()->format(\DateTime::ISO8601);
+        $responseData['end_date'] = $campaign->getEndDate()->format(\DateTime::ISO8601);
+
 
         $encoders = array(new JsonEncoder());
         $normalizers = array(new GetSetMethodNormalizer());

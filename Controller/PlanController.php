@@ -25,6 +25,9 @@ class PlanController extends Controller
          */
         $this->get('session')->set('campaignchain.campaign', $id);
 
+        $campaignService = $this->get('campaignchain.core.campaign');
+        $campaign = $campaignService->getCampaign($id);
+
         return $this->render(
             'CampaignChainCampaignTemplateBundle:Plan/Timeline:detail.html.twig',
             array(
@@ -35,6 +38,8 @@ class PlanController extends Controller
                 'gantt_toolbar_status' => 'default',
                 'path_embedded' => '',
                 'path_fullscreen' =>  '',
+                'scale_start_date' => $campaign->getStartDate()->format(\DateTime::ISO8601),
+                'scale_end_date' => $campaign->getEndDate()->format(\DateTime::ISO8601),
             ));
     }
 }

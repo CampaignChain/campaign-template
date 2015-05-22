@@ -21,7 +21,7 @@ file that was distributed with this source code.
                 </tr>
             </thead>
             <tbody>
-                {% for campaign in repository_campaigns%}
+                {% for campaign in repository_campaigns %}
                     <tr class="
                             {% if campaign.status == "paused" %}text-muted {% endif %}
                             ">
@@ -35,45 +35,7 @@ file that was distributed with this source code.
                                href="{{ path('campaignchain_campaign_template_plan_timeline_detail',{'id':campaign.id}) }}">
                                 <span class="fa fa-calendar"></span>
                             </a>
-                            {#{% if campaign.status == 'inactive' %}#}
-                                {#<button type="button" class="btn btn-default btn-xs">#}
-                                    {#<a href="#"><span class="fa fa-play"></span></a>#}
-                                {#</button>#}
-                            {#{% else %}#}
-                                {#<button type="button" class="btn btn-default btn-xs">#}
-                                    {#<a href="#"><span class="fa fa-pause"></span></a>#}
-                                {#</button>#}
-                            {#{% endif %}#}
-
-                                {#<a class="btn btn-primary btn-xs" role="button" data-toggle="modal"#}
-                                               {#data-target="#delete{{ campaign.id }}Modal"><span class="fa fa-trash-o"></span></a>#}
-
-
-                            {#<div class="modal fade" data-id="{{ campaign.id }}" id="delete{{ campaign.id }}Modal" tabindex="-1" role="dialog" aria-labelledby="delete{{ campaign.id }}Modal" aria-hidden="true">#}
-                                {#<div class="modal-dialog">#}
-                                    {#<div class="modal-content">#}
-                                        {#<div class="modal-header">#}
-                                            {#<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>#}
-                                            {#<h4 class="modal-title" id="myModalLabel">Delete</h4>#}
-                                        {#</div>#}
-                                        {#<div class="modal-body">#}
-                                            {#<p>Are you sure you want to delete "{{ campaign.name }}"?</p>#}
-                                            {#<input type="hidden" name="entityId" id="entityId" value=""/>#}
-                                        {#</div>#}
-                                        {#<div class="modal-footer">#}
-                                            {#<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>#}
-                                            {#<button type="submit" class="btn btn-warning">Delete</button>#}
-                                        {#</div>#}
-                                    {#</div>#}
-                                {#</div>#}
-                            {#</div>#}
-
-                            {#<script>#}
-                                {#$(document).on("click", "#delete{{ campaign.id }}Modal", function () {#}
-                                    {#var entityId = $(this).data('id');#}
-                                    {#$(".modal-body #entityId").val( entityId );#}
-                                {#});#}
-                            {#</script>#}
+                            {{ campaign.id|campaignchain_btn_convert_tpl }}
                         </td>
                     </tr>
                 {% endfor %}

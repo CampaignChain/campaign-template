@@ -11,6 +11,7 @@
         }
     ],
     "require": {
+        "campaignchain/hook-timespan": "dev-master"
     },
     "autoload": {
         "psr-4": { "CampaignChain\\Campaign\\TemplateBundle\\": "" }

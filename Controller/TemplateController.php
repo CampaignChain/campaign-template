@@ -27,6 +27,7 @@ class TemplateController extends Controller
     const MODULE_IDENTIFIER = 'campaignchain-template';
 
     public function indexAction(){
+        // Get the campaign templates
         $qb = $this->getDoctrine()->getEntityManager()->createQueryBuilder();
         $qb->select('c')
             ->from('CampaignChain\CoreBundle\Entity\Campaign', 'c')
@@ -45,7 +46,7 @@ class TemplateController extends Controller
             'CampaignChainCampaignTemplateBundle::index.html.twig',
             array(
                 'page_title' => 'Campaign Templates',
-                'repository_campaigns' => $repository_campaigns
+                'repository_campaigns' => $repository_campaigns,
             ));
     }
 

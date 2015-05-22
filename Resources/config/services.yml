@@ -6,6 +6,8 @@
 # file that was distributed with this source code.
 
 services:
-#    campaign_chain_campaign_template.example:
-#        class: CampaignChain\Campaign\TemplateBundle\Example
-#        arguments: [@service_id, "plain_value", %parameter%]
+    campaignchain.campaign.campaign_template.twig.campaignchain_campaign_template_extension:
+        class: CampaignChain\Campaign\TemplateBundle\Twig\CampaignChainCampaignTemplateExtension
+        arguments: [@doctrine.orm.entity_manager, "@service_container"]
+        tags:
+            - { name: twig.extension }

@@ -11,4 +11,5 @@ modules:
             plan: campaignchain_campaign_template
             plan_detail: campaignchain_campaign_template_plan_timeline_detail
         hooks:
-            campaignchain-timespan: true
+            default:
+                campaignchain-timespan: true

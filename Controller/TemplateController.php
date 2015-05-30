@@ -156,7 +156,7 @@ class TemplateController extends Controller
         $campaignType = $this->get('campaignchain.core.form.type.campaign');
         $campaignType->setBundleName(self::BUNDLE_NAME);
         $campaignType->setModuleIdentifier(self::MODULE_IDENTIFIER);
-        $campaignType->setView('modal');
+        $campaignType->setView('default');
 
         $form = $this->createForm($campaignType, $campaign);
 

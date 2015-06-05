@@ -105,6 +105,7 @@ class TemplateController extends Controller
             array(
                 'page_title' => 'Create New Campaign Template',
                 'form' => $form->createView(),
+                'form_submit_label' => 'Save',
             ));
     }
 
@@ -139,10 +140,12 @@ class TemplateController extends Controller
         }
 
         return $this->render(
-            'CampaignChainCoreBundle:Base:new.html.twig',
+            'CampaignChainCampaignTemplateBundle:Template:edit.html.twig',
             array(
                 'page_title' => 'Edit Campaign Template',
                 'form' => $form->createView(),
+                'form_submit_label' => 'Save',
+                'campaign' => $campaign,
             ));
     }
 

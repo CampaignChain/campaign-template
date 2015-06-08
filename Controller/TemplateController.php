@@ -140,7 +140,7 @@ class TemplateController extends Controller
         }
 
         return $this->render(
-            'CampaignChainCampaignTemplateBundle:Template:edit.html.twig',
+            'CampaignChainCoreBundle:Campaign:edit.html.twig',
             array(
                 'page_title' => 'Edit Campaign Template',
                 'form' => $form->createView(),

@@ -38,3 +38,7 @@ campaignchain_campaign_template_edit_api:
 campaignchain_campaign_template_plan_timeline_detail:
     pattern:  /campaign/template/plan/timeline/{id}
     defaults: { _controller: CampaignChainCampaignTemplateBundle:Plan:timelineDetail }
+
+campaignchain_campaign_template_convert:
+    pattern:  /campaign/template/convert/{id}
+    defaults: { _controller: CampaignChainCampaignTemplateBundle:Template:convert }

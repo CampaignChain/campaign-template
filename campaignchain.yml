@@ -9,6 +9,7 @@ modules:
             edit_api: campaignchain_campaign_template_edit_api
             plan: campaignchain_campaign_template
             plan_detail: campaignchain_campaign_template_plan_timeline_detail
+            convert: campaignchain_campaign_template_convert
         hooks:
             default:
                 campaignchain-timespan: true

@@ -12,6 +12,5 @@ modules:
         hooks:
             default:
                 campaignchain-timespan: true
-                campaignchain-assignee: true
         conversions:
             - campaignchain/campaign-scheduled/campaignchain-scheduled

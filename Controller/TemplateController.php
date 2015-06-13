@@ -10,7 +10,6 @@
 
 namespace CampaignChain\Campaign\TemplateBundle\Controller;
 
-use CampaignChain\CoreBundle\Util\DateTimeUtil;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use CampaignChain\CoreBundle\Entity\Campaign;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,6 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
+use CampaignChain\CoreBundle\Entity\Module;
 use CampaignChain\CoreBundle\Entity\Action;
 
 class TemplateController extends Controller
@@ -204,18 +204,83 @@ class TemplateController extends Controller
         return $response->setStatusCode(Response::HTTP_OK);
     }
 
-    public function getCampaign($id){
-        $campaign = $this->getDoctrine()
-            ->getRepository('CampaignChainCoreBundle:Campaign')
-            ->find($id);
+    public function convertAction(Request $request, $id)
+    {
+        $campaignService = $this->get('campaignchain.core.campaign');
+        $fromCampaign = $campaignService->getCampaign($id);
+        $campaignURI = $campaignService->getCampaignURI($fromCampaign);
 
-        if (!$campaign) {
-            // TODO: Make sure we return this error as a response if it is an API call.
-            throw new \Exception(
-                'No product found for id '.$id
-            );
+        switch($campaignURI){
+            case 'campaignchain/campaign-scheduled/campaignchain-scheduled':
+                $scheduledCampaign = $fromCampaign;
+                $campaignTemplate = clone $scheduledCampaign;
+
+                $campaignTemplate->setName($scheduledCampaign->getName().' (converted)');
+                $campaignType = $this->get('campaignchain.core.form.type.campaign');
+                $campaignType->setBundleName(self::BUNDLE_NAME);
+                $campaignType->setModuleIdentifier(self::MODULE_IDENTIFIER);
+                $campaignType->setHooksOptions(
+                    array(
+                        'campaignchain-timespan' => array(
+                            'disabled' => true,
+                        )
+                    )
+                );
+
+                $form = $this->createForm($campaignType, $campaignTemplate);
+
+                $form->handleRequest($request);
+
+                if ($form->isValid()) {
+                    // Clone the campaign template.
+                    $clonedCampaign = $campaignService->cloneCampaign(
+                        $scheduledCampaign
+                    );
+
+                    // Change module relationship of cloned campaign
+                    $moduleService = $this->get('campaignchain.core.module');
+                    $clonedCampaign->setCampaignModule(
+                        $moduleService->getModule(
+                            Module::REPOSITORY_CAMPAIGN,
+                            self::BUNDLE_NAME,
+                            self::MODULE_IDENTIFIER
+                        )
+                    );
+                    // Specify other parameters of converted campaign.
+                    $clonedCampaign->setName($campaignTemplate->getName());
+                    $clonedCampaign->setHasRelativeDates(true);
+                    $clonedCampaign->setStatus(Action::STATUS_PAUSED);
+                    $hookService = $this->get('campaignchain.core.hook');
+                    $clonedCampaign->setTriggerHook(
+                        $hookService->getHook('campaignchain-timespan')
+                    );
+
+                    $repository = $this->getDoctrine()->getManager();
+                    $repository->flush();
+
+                    // Move the cloned campaign to 2012-01-01 (the default date
+                    // for templates).
+                    $clonedCampaign = $campaignService->moveCampaign(
+                        $clonedCampaign, new \DateTime('2012-01-01'),
+                        Action::STATUS_PAUSED
+                    );
+
+                    $this->get('session')->getFlashBag()->add(
+                        'success',
+                        'The campaign template <a href="'.$this->generateUrl('campaignchain_core_campaign_edit', array('id' => $clonedCampaign->getId())).'">'.$clonedCampaign->getName().'</a> was created successfully.'
+                    );
+
+                    return $this->redirect($this->generateUrl('campaignchain_core_campaign'));
+                }
+
+                return $this->render(
+                    'CampaignChainCoreBundle:Base:new.html.twig',
+                    array(
+                        'page_title' => 'Convert Scheduled Campaign to Template',
+                        'form' => $form->createView(),
+                    ));
+
+                break;
         }
-
-        return $campaign;
     }
 }

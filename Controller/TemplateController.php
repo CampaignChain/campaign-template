@@ -164,10 +164,12 @@ class TemplateController extends Controller
         $form = $this->createForm($campaignType, $campaign);
 
         return $this->render(
-            'CampaignChainCoreBundle:Base:new_modal.html.twig',
+            'CampaignChainCoreBundle:Campaign:edit_modal.html.twig',
             array(
                 'page_title' => 'Edit Campaign Template',
                 'form' => $form->createView(),
+                'campaign' => $campaign,
+                'form_submit_label' => 'Save',
             ));
     }
 

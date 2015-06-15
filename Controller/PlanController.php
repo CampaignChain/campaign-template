@@ -32,6 +32,7 @@ class PlanController extends Controller
             'CampaignChainCampaignTemplateBundle:Plan/Timeline:detail.html.twig',
             array(
                 'page_title' => 'Plan Campaign Template',
+                'page_secondary_title' => $campaign->getName(),
                 'gantt_tasks' => $this->get('campaignchain.core.model.dhtmlxgantt')->getTasks(
                         self::BUNDLE_NAME, self::MODULE_IDENTIFIER, $id
                     ),
@@ -40,6 +41,7 @@ class PlanController extends Controller
                 'path_fullscreen' =>  '',
                 'scale_start_date' => $campaign->getStartDate()->format(\DateTime::ISO8601),
                 'scale_end_date' => $campaign->getEndDate()->format(\DateTime::ISO8601),
+                'campaign' => $campaign,
             ));
     }
 }

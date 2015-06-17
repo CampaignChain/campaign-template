@@ -206,18 +206,72 @@ class TemplateController extends Controller
         return $response->setStatusCode(Response::HTTP_OK);
     }
 
-    public function convertAction(Request $request, $id)
+    public function copyAction(Request $request, $id)
     {
         $campaignService = $this->get('campaignchain.core.campaign');
         $fromCampaign = $campaignService->getCampaign($id);
         $campaignURI = $campaignService->getCampaignURI($fromCampaign);
 
         switch($campaignURI){
+            case 'campaignchain/campaign-template/campaignchain-template':
+                $toCampaign = clone $fromCampaign;
+                $toCampaign->setName($fromCampaign->getName().' (copied)');
+
+                $campaignType = $this->get('campaignchain.core.form.type.campaign');
+                $campaignType->setBundleName(self::BUNDLE_NAME);
+                $campaignType->setModuleIdentifier(self::MODULE_IDENTIFIER);
+                $campaignType->setHooksOptions(
+                    array(
+                        'campaignchain-timespan' => array(
+                            'disabled' => true,
+                        )
+                    )
+                );
+
+                $form = $this->createForm($campaignType, $toCampaign);
+
+                $form->handleRequest($request);
+
+                if ($form->isValid()) {
+                    $repository = $this->getDoctrine()->getManager();
+
+                    try {
+                        $repository->getConnection()->beginTransaction();
+
+                        // Clone the campaign template.
+                        $clonedCampaign = $campaignService->cloneCampaign(
+                            $fromCampaign
+                        );
+                        $clonedCampaign->setName($toCampaign->getName());
+
+                        $repository->flush();
+
+                        $this->get('session')->getFlashBag()->add(
+                            'success',
+                            'The campaign template <a href="'.$this->generateUrl('campaignchain_core_campaign_edit', array('id' => $clonedCampaign->getId())).'">'.$clonedCampaign->getName().'</a> was copied successfully.'
+                        );
+
+                        $repository->getConnection()->commit();
+
+                        return $this->redirect($this->generateUrl('campaignchain_core_campaign'));
+                    } catch (\Exception $e) {
+                        $repository->getConnection()->rollback();
+                        throw $e;
+                    }
+                }
+
+                return $this->render(
+                    'CampaignChainCoreBundle:Base:new.html.twig',
+                    array(
+                        'page_title' => 'Copy Campaign Template',
+                        'form' => $form->createView(),
+                    ));
+                break;
             case 'campaignchain/campaign-scheduled/campaignchain-scheduled':
                 $scheduledCampaign = $fromCampaign;
                 $campaignTemplate = clone $scheduledCampaign;
 
-                $campaignTemplate->setName($scheduledCampaign->getName().' (converted)');
+                $campaignTemplate->setName($scheduledCampaign->getName().' (copied)');
                 $campaignType = $this->get('campaignchain.core.form.type.campaign');
                 $campaignType->setBundleName(self::BUNDLE_NAME);
                 $campaignType->setModuleIdentifier(self::MODULE_IDENTIFIER);
@@ -234,51 +288,62 @@ class TemplateController extends Controller
                 $form->handleRequest($request);
 
                 if ($form->isValid()) {
-                    // Clone the campaign template.
-                    $clonedCampaign = $campaignService->cloneCampaign(
-                        $scheduledCampaign
-                    );
-
-                    // Change module relationship of cloned campaign
-                    $moduleService = $this->get('campaignchain.core.module');
-                    $clonedCampaign->setCampaignModule(
-                        $moduleService->getModule(
-                            Module::REPOSITORY_CAMPAIGN,
-                            self::BUNDLE_NAME,
-                            self::MODULE_IDENTIFIER
-                        )
-                    );
-                    // Specify other parameters of converted campaign.
-                    $clonedCampaign->setName($campaignTemplate->getName());
-                    $clonedCampaign->setHasRelativeDates(true);
-                    $clonedCampaign->setStatus(Action::STATUS_PAUSED);
-                    $hookService = $this->get('campaignchain.core.hook');
-                    $clonedCampaign->setTriggerHook(
-                        $hookService->getHook('campaignchain-timespan')
-                    );
-
                     $repository = $this->getDoctrine()->getManager();
-                    $repository->flush();
 
-                    // Move the cloned campaign to 2012-01-01 (the default date
-                    // for templates).
-                    $clonedCampaign = $campaignService->moveCampaign(
-                        $clonedCampaign, new \DateTime('2012-01-01'),
-                        Action::STATUS_PAUSED
-                    );
+                    try {
+                        $repository->getConnection()->beginTransaction();
 
-                    $this->get('session')->getFlashBag()->add(
-                        'success',
-                        'The campaign template <a href="'.$this->generateUrl('campaignchain_core_campaign_edit', array('id' => $clonedCampaign->getId())).'">'.$clonedCampaign->getName().'</a> was created successfully.'
-                    );
+                        // Clone the campaign template.
+                        $clonedCampaign = $campaignService->cloneCampaign(
+                            $scheduledCampaign
+                        );
 
-                    return $this->redirect($this->generateUrl('campaignchain_core_campaign'));
+                        // Change module relationship of cloned campaign
+                        $moduleService = $this->get('campaignchain.core.module');
+                        $clonedCampaign->setCampaignModule(
+                            $moduleService->getModule(
+                                Module::REPOSITORY_CAMPAIGN,
+                                self::BUNDLE_NAME,
+                                self::MODULE_IDENTIFIER
+                            )
+                        );
+                        // Specify other parameters of copied campaign.
+                        $clonedCampaign->setName($campaignTemplate->getName());
+                        $clonedCampaign->setHasRelativeDates(true);
+                        $clonedCampaign->setStatus(Action::STATUS_PAUSED);
+                        $hookService = $this->get('campaignchain.core.hook');
+                        $clonedCampaign->setTriggerHook(
+                            $hookService->getHook('campaignchain-timespan')
+                        );
+
+                        $repository = $this->getDoctrine()->getManager();
+                        $repository->flush();
+
+                        // Move the cloned campaign to 2012-01-01 (the default date
+                        // for templates).
+                        $clonedCampaign = $campaignService->moveCampaign(
+                            $clonedCampaign, new \DateTime('2012-01-01'),
+                            Action::STATUS_PAUSED
+                        );
+
+                        $this->get('session')->getFlashBag()->add(
+                            'success',
+                            'The campaign template <a href="'.$this->generateUrl('campaignchain_core_campaign_edit', array('id' => $clonedCampaign->getId())).'">'.$clonedCampaign->getName().'</a> was copied successfully.'
+                        );
+
+                        $repository->getConnection()->commit();
+
+                        return $this->redirect($this->generateUrl('campaignchain_core_campaign'));
+                    } catch (\Exception $e) {
+                        $repository->getConnection()->rollback();
+                        throw $e;
+                    }
                 }
 
                 return $this->render(
                     'CampaignChainCoreBundle:Base:new.html.twig',
                     array(
-                        'page_title' => 'Convert Scheduled Campaign to Template',
+                        'page_title' => 'Copy Scheduled Campaign as Template',
                         'form' => $form->createView(),
                     ));
 

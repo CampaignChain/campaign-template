@@ -19,7 +19,7 @@ file that was distributed with this source code.
                     <li><a href="#" onclick="zoom_tasks('months')">Months</a></li>
                 </ul>
             </div>
-            {{ campaign.id|campaignchain_btn_convert_campaign }}
+            {{ campaign.id|campaignchain_btn_copy_campaign }}
             <div class="btn-group pull-right">
                 {% if gantt_toolbar_status != 'fullscreen' %}
                     <a href="{{ path_fullscreen }}" class="btn btn-default" role="button"><span class="fa fa-arrows-alt"></span></a>

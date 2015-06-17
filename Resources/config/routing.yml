@@ -39,6 +39,10 @@ campaignchain_campaign_template_plan_timeline_detail:
     pattern:  /campaign/template/plan/timeline/{id}
     defaults: { _controller: CampaignChainCampaignTemplateBundle:Plan:timelineDetail }
 
+campaignchain_campaign_template_plan_timeline_detail_fullscreen:
+    pattern:  /campaign/template/plan/timeline/fullscreen/{id}
+    defaults: { _controller: CampaignChainCampaignTemplateBundle:Plan:timelineDetailFullScreen }
+
 campaignchain_campaign_template_copy:
     pattern:  /campaign/template/copy/{id}
     defaults: { _controller: CampaignChainCampaignTemplateBundle:Template:copy }

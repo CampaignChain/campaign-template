@@ -6,3 +6,6 @@
 # file that was distributed with this source code.
 
 services:
+    campaignchain.campaign.template:
+        class: CampaignChain\Campaign\TemplateBundle\EntityService\CampaignTemplateService
+        arguments: [ @doctrine.orm.entity_manager, @service_container ]

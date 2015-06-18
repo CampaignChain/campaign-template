@@ -13,8 +13,9 @@ namespace CampaignChain\Campaign\TemplateBundle\EntityService;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use CampaignChain\CoreBundle\Entity\Action;
+use CampaignChain\CoreBundle\EntityService\CampaignModuleServiceInterface;
 
-class CampaignTemplateService
+class CampaignTemplateService implements CampaignModuleServiceInterface
 {
     protected $em;
     protected $container;

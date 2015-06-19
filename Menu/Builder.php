@@ -22,6 +22,12 @@ class Builder extends ContainerAware
         $menu = $factory->createItem('root');
 
         $menu->addChild(
+            'List',
+            array(
+                'route' => 'campaignchain_campaign_template'
+            )
+        );
+        $menu->addChild(
             'Edit',
             array(
                 'route' => 'campaignchain_campaign_template_edit',

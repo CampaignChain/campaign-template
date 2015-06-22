@@ -22,7 +22,6 @@ use CampaignChain\CoreBundle\Entity\Action;
 
 class TemplateController extends Controller
 {
-    const FORMAT_DATEINTERVAL = 'Years: %Y, months: %m, days: %d, hours: %h, minutes: %i, seconds: %s';
     const BUNDLE_NAME = 'campaignchain/campaign-template';
     const MODULE_IDENTIFIER = 'campaignchain-template';
 
@@ -36,8 +35,8 @@ class TemplateController extends Controller
             ->where('b.name = :bundleName')
             ->andWhere('m.identifier = :moduleIdentifier')
             ->andWhere('m.id = c.campaignModule')
-            ->setParameter('bundleName', self::BUNDLE_NAME)
-            ->setParameter('moduleIdentifier', self::MODULE_IDENTIFIER)
+            ->setParameter('bundleName', static::BUNDLE_NAME)
+            ->setParameter('moduleIdentifier', static::MODULE_IDENTIFIER)
             ->orderBy('c.name', 'ASC');
         $query = $qb->getQuery();
         $repository_campaigns = $query->getResult();
@@ -62,8 +61,8 @@ class TemplateController extends Controller
         $campaign->setStartDate(new \DateTime('2012-01-01 00:00:00'));
 
         $campaignType = $this->get('campaignchain.core.form.type.campaign');
-        $campaignType->setBundleName(self::BUNDLE_NAME);
-        $campaignType->setModuleIdentifier(self::MODULE_IDENTIFIER);
+        $campaignType->setBundleName(static::BUNDLE_NAME);
+        $campaignType->setModuleIdentifier(static::MODULE_IDENTIFIER);
 
         $form = $this->createForm($campaignType, $campaign);
 
@@ -82,7 +81,7 @@ class TemplateController extends Controller
                 $repository->flush();
 
                 $hookService = $this->get('campaignchain.core.hook');
-                $campaign = $hookService->processHooks(self::BUNDLE_NAME, self::MODULE_IDENTIFIER, $campaign, $form, true);
+                $campaign = $hookService->processHooks(static::BUNDLE_NAME, static::MODULE_IDENTIFIER, $campaign, $form, true);
 
                 $repository->flush();
 
@@ -115,8 +114,8 @@ class TemplateController extends Controller
         $campaign = $campaignService->getCampaign($id);
 
         $campaignType = $this->get('campaignchain.core.form.type.campaign');
-        $campaignType->setBundleName(self::BUNDLE_NAME);
-        $campaignType->setModuleIdentifier(self::MODULE_IDENTIFIER);
+        $campaignType->setBundleName(static::BUNDLE_NAME);
+        $campaignType->setModuleIdentifier(static::MODULE_IDENTIFIER);
 
         $form = $this->createForm($campaignType, $campaign);
 
@@ -126,7 +125,7 @@ class TemplateController extends Controller
             $repository = $this->getDoctrine()->getManager();
 
             $hookService = $this->get('campaignchain.core.hook');
-            $campaign = $hookService->processHooks(self::BUNDLE_NAME, self::MODULE_IDENTIFIER, $campaign, $form);
+            $campaign = $hookService->processHooks(static::BUNDLE_NAME, static::MODULE_IDENTIFIER, $campaign, $form);
             $repository->persist($campaign);
 
             $repository->flush();
@@ -158,8 +157,8 @@ class TemplateController extends Controller
         $campaign = $campaignService->getCampaign($id);
 
         $campaignType = $this->get('campaignchain.core.form.type.campaign');
-        $campaignType->setBundleName(self::BUNDLE_NAME);
-        $campaignType->setModuleIdentifier(self::MODULE_IDENTIFIER);
+        $campaignType->setBundleName(static::BUNDLE_NAME);
+        $campaignType->setModuleIdentifier(static::MODULE_IDENTIFIER);
         $campaignType->setView('default');
 
         $form = $this->createForm($campaignType, $campaign);
@@ -191,7 +190,7 @@ class TemplateController extends Controller
         $repository->persist($campaign);
 
         $hookService = $this->get('campaignchain.core.hook');
-        $hookService->processHooks(self::BUNDLE_NAME, self::MODULE_IDENTIFIER, $campaign, $data);
+        $hookService->processHooks(static::BUNDLE_NAME, static::MODULE_IDENTIFIER, $campaign, $data);
 
         $repository->flush();
 
@@ -219,8 +218,8 @@ class TemplateController extends Controller
                 $toCampaign->setName($fromCampaign->getName().' (copied)');
 
                 $campaignType = $this->get('campaignchain.core.form.type.campaign');
-                $campaignType->setBundleName(self::BUNDLE_NAME);
-                $campaignType->setModuleIdentifier(self::MODULE_IDENTIFIER);
+                $campaignType->setBundleName(static::BUNDLE_NAME);
+                $campaignType->setModuleIdentifier(static::MODULE_IDENTIFIER);
                 $campaignType->setHooksOptions(
                     array(
                         'campaignchain-timespan' => array(
@@ -274,8 +273,8 @@ class TemplateController extends Controller
 
                 $campaignTemplate->setName($scheduledCampaign->getName().' (copied)');
                 $campaignType = $this->get('campaignchain.core.form.type.campaign');
-                $campaignType->setBundleName(self::BUNDLE_NAME);
-                $campaignType->setModuleIdentifier(self::MODULE_IDENTIFIER);
+                $campaignType->setBundleName(static::BUNDLE_NAME);
+                $campaignType->setModuleIdentifier(static::MODULE_IDENTIFIER);
                 $campaignType->setHooksOptions(
                     array(
                         'campaignchain-timespan' => array(
@@ -304,8 +303,8 @@ class TemplateController extends Controller
                         $clonedCampaign->setCampaignModule(
                             $moduleService->getModule(
                                 Module::REPOSITORY_CAMPAIGN,
-                                self::BUNDLE_NAME,
-                                self::MODULE_IDENTIFIER
+                                static::BUNDLE_NAME,
+                                static::MODULE_IDENTIFIER
                             )
                         );
                         // Specify other parameters of copied campaign.

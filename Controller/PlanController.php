@@ -34,7 +34,7 @@ class PlanController extends Controller
                 'page_title' => 'Plan Campaign Template',
                 'page_secondary_title' => $campaign->getName(),
                 'gantt_tasks' => $this->get('campaignchain.core.model.dhtmlxgantt')->getTasks(
-                        self::BUNDLE_NAME, self::MODULE_IDENTIFIER, $id
+                        static::BUNDLE_NAME, static::MODULE_IDENTIFIER, $id
                     ),
                 'gantt_toolbar_status' => 'default',
                 'path_embedded' => $this->generateUrl('campaignchain_campaign_template_plan_timeline_detail', array('id' => $id)),
@@ -61,7 +61,7 @@ class PlanController extends Controller
                 'page_title' => 'Plan Campaign Template',
                 'page_secondary_title' => $campaign->getName(),
                 'gantt_tasks' => $this->get('campaignchain.core.model.dhtmlxgantt')->getTasks(
-                        self::BUNDLE_NAME, self::MODULE_IDENTIFIER, $id
+                        static::BUNDLE_NAME, static::MODULE_IDENTIFIER, $id
                     ),
                 'gantt_toolbar_status' => 'fullscreen',
                 'path_fullscreen_close' => $this->generateUrl('campaignchain_campaign_template_plan_timeline_detail', array('id' => $id)),

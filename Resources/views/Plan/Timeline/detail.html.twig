@@ -50,13 +50,7 @@ file that was distributed with this source code.
     <script type="text/javascript">
         var tasks = {{ gantt_tasks|raw }}
                 gantt.init(
-                    "gantt_here"/*,
-                    campaignchainGetUserDateTime(
-                        moment('{{ scale_start_date }}', moment.ISO_8601)
-                    ),
-                    campaignchainGetUserDateTime(
-                            moment('{{ scale_end_date }}', moment.ISO_8601)
-                    )*/
+                    "gantt_here"
                 );
     </script>
 

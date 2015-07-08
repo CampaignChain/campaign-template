@@ -29,7 +29,8 @@ file that was distributed with this source code.
 {% endblock %}
 
 {% block bodytabs %}
-    {{ knp_menu_render('CampaignChainCampaignTemplateBundle:Builder:detailsTab', { 'style': 'tabs' }) }}
+    {% set menuItem = knp_menu_get('CampaignChainCampaignTemplateBundle:Builder:detailsTab', [], {'routes': routes}) %}
+    {{ knp_menu_render(menuItem, { 'style': 'tabs' }) }}
 {% endblock %}
 
 {% block body %}

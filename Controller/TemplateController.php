@@ -22,8 +22,10 @@ use CampaignChain\CoreBundle\Entity\Action;
 
 class TemplateController extends Controller
 {
+    const CAMPAIGN_DISPLAY_NAME = "Campaign Template";
     const BUNDLE_NAME = 'campaignchain/campaign-template';
     const MODULE_IDENTIFIER = 'campaignchain-template';
+    const TRIGGER_HOOK = 'campaignchain-timespan';
 
     public function indexAction(){
         // Get the campaign templates
@@ -44,7 +46,7 @@ class TemplateController extends Controller
         return $this->render(
             'CampaignChainCampaignTemplateBundle::index.html.twig',
             array(
-                'page_title' => 'Campaign Templates',
+                'page_title' => static::CAMPAIGN_DISPLAY_NAME.'s',
                 'repository_campaigns' => $repository_campaigns,
             ));
     }
@@ -83,6 +85,11 @@ class TemplateController extends Controller
                 $hookService = $this->get('campaignchain.core.hook');
                 $campaign = $hookService->processHooks(static::BUNDLE_NAME, static::MODULE_IDENTIFIER, $campaign, $form, true);
 
+                $hookService = $this->get('campaignchain.core.hook');
+                $campaign->setTriggerHook(
+                    $hookService->getHook(static::TRIGGER_HOOK)
+                );
+                
                 $repository->flush();
 
                 $repository->getConnection()->commit();
@@ -102,7 +109,7 @@ class TemplateController extends Controller
         return $this->render(
             'CampaignChainCoreBundle:Base:new.html.twig',
             array(
-                'page_title' => 'Create New Campaign Template',
+                'page_title' => 'New '.static::CAMPAIGN_DISPLAY_NAME,
                 'form' => $form->createView(),
                 'form_submit_label' => 'Save',
             ));
@@ -141,11 +148,12 @@ class TemplateController extends Controller
         return $this->render(
             'CampaignChainCampaignTemplateBundle::edit.html.twig',
             array(
-                'page_title' => 'Edit Campaign Template',
+                'page_title' => 'Edit '.static::CAMPAIGN_DISPLAY_NAME,
                 'page_secondary_title' => $campaign->getName(),
                 'form' => $form->createView(),
                 'form_submit_label' => 'Save',
                 'campaign' => $campaign,
+                'routes' => $campaign->getCampaignModule()->getRoutes(),
             ));
     }
 
@@ -166,7 +174,7 @@ class TemplateController extends Controller
         return $this->render(
             'CampaignChainCoreBundle:Campaign:edit_modal.html.twig',
             array(
-                'page_title' => 'Edit Campaign Template',
+                'page_title' => 'Edit '.static::CAMPAIGN_DISPLAY_NAME,
                 'form' => $form->createView(),
                 'campaign' => $campaign,
                 'form_submit_label' => 'Save',
@@ -263,7 +271,7 @@ class TemplateController extends Controller
                 return $this->render(
                     'CampaignChainCoreBundle:Base:new.html.twig',
                     array(
-                        'page_title' => 'Copy Campaign Template',
+                        'page_title' => 'Copy '.static::CAMPAIGN_DISPLAY_NAME,
                         'form' => $form->createView(),
                     ));
                 break;
@@ -343,7 +351,7 @@ class TemplateController extends Controller
                 return $this->render(
                     'CampaignChainCoreBundle:Base:new.html.twig',
                     array(
-                        'page_title' => 'Copy Scheduled Campaign as Template',
+                        'page_title' => 'Copy Scheduled Campaign as '.static::CAMPAIGN_DISPLAY_NAME,
                         'form' => $form->createView(),
                     ));
 

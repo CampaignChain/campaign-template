@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class PlanController extends Controller
 {
+    const CAMPAIGN_DISPLAY_NAME = "Campaign Template";
     const BUNDLE_NAME = 'campaignchain/campaign-template';
     const MODULE_IDENTIFIER = 'campaignchain-template';
 
@@ -31,7 +32,7 @@ class PlanController extends Controller
         return $this->render(
             'CampaignChainCampaignTemplateBundle:Plan/Timeline:detail.html.twig',
             array(
-                'page_title' => 'Plan Campaign Template',
+                'page_title' => 'Plan '.static::CAMPAIGN_DISPLAY_NAME,
                 'page_secondary_title' => $campaign->getName(),
                 'gantt_tasks' => $this->get('campaignchain.core.model.dhtmlxgantt')->getTasks(
                         static::BUNDLE_NAME, static::MODULE_IDENTIFIER, $id
@@ -41,6 +42,7 @@ class PlanController extends Controller
                 'path_fullscreen' =>  $this->generateUrl('campaignchain_campaign_template_plan_timeline_detail_fullscreen', array('id' => $id)),
                 'scale_start_date' => $campaign->getStartDate()->format(\DateTime::ISO8601),
                 'scale_end_date' => $campaign->getEndDate()->format(\DateTime::ISO8601),
+                'routes' => $campaign->getCampaignModule()->getRoutes(),
                 'campaign' => $campaign,
             ));
     }
@@ -58,7 +60,7 @@ class PlanController extends Controller
         return $this->render(
             'CampaignChainCampaignTemplateBundle:Plan/Timeline:detail_fullscreen.html.twig',
             array(
-                'page_title' => 'Plan Campaign Template',
+                'page_title' => 'Plan '.static::CAMPAIGN_DISPLAY_NAME,
                 'page_secondary_title' => $campaign->getName(),
                 'gantt_tasks' => $this->get('campaignchain.core.model.dhtmlxgantt')->getTasks(
                         static::BUNDLE_NAME, static::MODULE_IDENTIFIER, $id
@@ -68,6 +70,7 @@ class PlanController extends Controller
                 'path_fullscreen' =>  $this->generateUrl('campaignchain_campaign_template_plan_timeline_detail_fullscreen', array('id' => $id)),
                 'scale_start_date' => $campaign->getStartDate()->format(\DateTime::ISO8601),
                 'scale_end_date' => $campaign->getEndDate()->format(\DateTime::ISO8601),
+                'routes' => $campaign->getCampaignModule()->getRoutes(),
                 'campaign' => $campaign,
             ));
     }

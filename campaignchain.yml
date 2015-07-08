@@ -11,6 +11,7 @@ modules:
             edit_api: campaignchain_campaign_template_edit_api
             plan: campaignchain_campaign_template
             plan_detail: campaignchain_campaign_template_plan_timeline_detail
+            plan_detail_fullscreen: campaignchain_campaign_template_plan_timeline_detail_fullscreen
             copy: campaignchain_campaign_template_copy
         hooks:
             default:

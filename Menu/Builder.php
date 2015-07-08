@@ -24,13 +24,13 @@ class Builder extends ContainerAware
         $menu->addChild(
             'List',
             array(
-                'route' => 'campaignchain_campaign_template'
+                'route' => $options['routes']['plan']
             )
         );
         $menu->addChild(
             'Edit',
             array(
-                'route' => 'campaignchain_campaign_template_edit',
+                'route' => $options['routes']['edit'],
                 'routeParameters' => array(
                     'id' => $id
                 )
@@ -39,7 +39,7 @@ class Builder extends ContainerAware
         $menu->addChild(
             'Timeline',
             array(
-                'route' => 'campaignchain_campaign_template_plan_timeline_detail',
+                'route' => $options['routes']['plan_detail'],
                 'routeParameters' => array(
                     'id' => $id
                 )

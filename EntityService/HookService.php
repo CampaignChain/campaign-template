@@ -13,9 +13,9 @@ namespace CampaignChain\Campaign\TemplateBundle\EntityService;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use CampaignChain\CoreBundle\Entity\Action;
-use CampaignChain\CoreBundle\EntityService\CampaignModuleServiceInterface;
+use CampaignChain\CoreBundle\EntityService\CampaignHookServiceInterface;
 
-class CampaignTemplateService implements CampaignModuleServiceInterface
+class HookService implements CampaignHookServiceInterface
 {
     protected $em;
     protected $container;
@@ -26,7 +26,8 @@ class CampaignTemplateService implements CampaignModuleServiceInterface
         $this->container = $container;
     }
 
-    public function processAction(Action $action){
+    public function processAction(Action $action)
+    {
         $action->setStatus(Action::STATUS_PAUSED);
         return $action;
     }

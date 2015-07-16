@@ -3,7 +3,7 @@ modules:
         display_name: Campaign Template
         description: Create re-usable templates of campaigns.
         services:
-            campaign: campaignchain.campaign.template
+            hook: campaignchain.campaign.template.hook
         routes:
             new: campaignchain_campaign_template_new
             edit: campaignchain_campaign_template_edit

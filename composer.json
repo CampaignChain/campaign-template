@@ -1,6 +1,7 @@
 {
     "name": "campaignchain/campaign-template",
     "description": "Create re-usable templates of campaigns.",
+    "keywords": ["campaign","campaignchain"],
     "type": "campaignchain-campaign",
     "license": "Apache-2.0",
     "homepage": "http://www.campaignchain.com",

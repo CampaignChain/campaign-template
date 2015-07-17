@@ -11,6 +11,7 @@
 namespace CampaignChain\Campaign\TemplateBundle\EntityService;
 
 use CampaignChain\CoreBundle\Entity\Campaign;
+use CampaignChain\CoreBundle\Entity\CampaignModule;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use CampaignChain\CoreBundle\Entity\Action;
@@ -23,11 +24,13 @@ class CopyService
 
     protected $em;
     protected $container;
+    protected $logger;
 
     public function __construct(EntityManager $em, ContainerInterface $container)
     {
         $this->em = $em;
         $this->container = $container;
+        $this->logger = $this->container->get('logger');
     }
 
     public function template2Template(Campaign $campaignTemplate, $status = null, $name = null)
@@ -59,7 +62,8 @@ class CopyService
         }
     }
 
-    public function scheduled2Template(Campaign $scheduledCampaign, $status = null, $name = null)
+    public function scheduled2Template(
+        Campaign $scheduledCampaign, $status = null, $name = null)
     {
         $campaignService = $this->container->get('campaignchain.core.campaign');
 
@@ -71,15 +75,14 @@ class CopyService
                 $scheduledCampaign
             );
 
-            // Change module relationship of cloned campaign
+            // Change module relationship of cloned campaign.
             $moduleService = $this->container->get('campaignchain.core.module');
-            $campaignTemplate->setCampaignModule(
-                $moduleService->getModule(
-                    Module::REPOSITORY_CAMPAIGN,
-                    static::BUNDLE_NAME,
-                    static::MODULE_IDENTIFIER
-                )
+            $module = $moduleService->getModule(
+                Module::REPOSITORY_CAMPAIGN,
+                static::BUNDLE_NAME,
+                static::MODULE_IDENTIFIER
             );
+            $campaignTemplate->setCampaignModule($module);
             // Specify other parameters of copied campaign.
             if($name != null) {
                 $campaignTemplate->setName($name);

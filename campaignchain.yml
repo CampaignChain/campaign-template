@@ -17,5 +17,6 @@ modules:
             default:
                 campaignchain-timespan: true
         conversions:
-            - campaignchain/campaign-template/campaignchain-template
             - campaignchain/campaign-scheduled/campaignchain-scheduled
+            - campaignchain/campaign-repeating/campaignchain-repeating
+            - campaignchain/campaign-template/campaignchain-template

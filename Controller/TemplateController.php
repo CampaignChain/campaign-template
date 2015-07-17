@@ -247,7 +247,7 @@ class TemplateController extends Controller
 
                     $this->get('session')->getFlashBag()->add(
                         'success',
-                        'The campaign template <a href="'.$this->generateUrl(
+                        'The '.static::CAMPAIGN_DISPLAY_NAME.' <a href="'.$this->generateUrl(
                             'campaignchain_core_campaign_edit',
                             array('id' => $clonedCampaign->getId())).'">'.
                         $clonedCampaign->getName().'</a> was copied successfully.'

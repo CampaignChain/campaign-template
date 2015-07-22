@@ -1,7 +1,7 @@
 modules:
     campaignchain-template:
         display_name: Campaign Template
-        description: Create re-usable templates of campaigns.
+        description: Create re-usable templates of campaigns with pre-defined Activities and Milestones. You could then convert it into a Scheduled Campaign whenever you want to have the Campaign Template executed from a certain date onwards.
         services:
             hook: campaignchain.campaign.template.hook
         routes:

@@ -17,8 +17,8 @@
         "docs": "http://doc.campaignchain.com"
     },
     "require": {
-        "campaignchain/hook-timespan": "1.0.0-beta.2",
-        "campaignchain/campaign-scheduled": "1.0.0-beta.2"
+        "campaignchain/hook-timespan": "dev-master",
+        "campaignchain/campaign-scheduled": "dev-master"
     },
     "autoload": {
         "psr-4": { "CampaignChain\\Campaign\\TemplateBundle\\": "" }

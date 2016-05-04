@@ -12,6 +12,7 @@ namespace CampaignChain\Campaign\TemplateBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use CampaignChain\CoreBundle\Entity\Campaign;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Serializer;
@@ -103,17 +104,24 @@ class TemplateController extends Controller
                 'Your new campaign template <a href="'.$this->generateUrl('campaignchain_campaign_template_edit', array('id' => $campaign->getId())).'">'.$campaign->getName().'</a> was created successfully.'
             );
 
-            return $this->redirect($this->generateUrl('campaignchain_core_campaign'));
+            if ($this->getRequest()->isXmlHttpRequest()) {
+                return new JsonResponse(array(
+                    'step' => 2
+                ));
+            } else {
+                return $this->redirectToRoute('campaignchain_core_campaign');
+            }
         }
 
         return $this->render(
-            'CampaignChainCoreBundle:Base:new.html.twig',
+            $this->getRequest()->isXmlHttpRequest() ? 'CampaignChainCoreBundle:Base:new_modal.html.twig' : 'CampaignChainCoreBundle:Base:new.html.twig',
             array(
                 'page_title' => 'New '.static::CAMPAIGN_DISPLAY_NAME,
                 'form' => $form->createView(),
                 'form_submit_label' => 'Save',
             ));
     }
+
 
     public function editAction(Request $request, $id)
     {

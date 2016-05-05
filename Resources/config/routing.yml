@@ -12,6 +12,8 @@ campaignchain_campaign_template:
 campaignchain_campaign_template_new:
     pattern:  /campaign/template/new
     defaults: { _controller: CampaignChainCampaignTemplateBundle:Template:new }
+    options:
+        expose: true
 
 campaignchain_campaign_template_edit:
     pattern:  /campaign/template/{id}/edit

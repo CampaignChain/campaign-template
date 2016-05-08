@@ -31,7 +31,7 @@ class TemplateController extends Controller
     public function indexAction()
     {
         // Get the campaign templates
-        $repository_campaigns = $this->getDoctrine()->getRepository('CampaignChainCoreBundle:Campaign')->getCampaignsByModule(static::MODULE_IDENTIFIER);
+        $repository_campaigns = $this->getDoctrine()->getRepository('CampaignChainCoreBundle:Campaign')->getCampaignsByModule(static::MODULE_IDENTIFIER, static::BUNDLE_NAME);
 
         return $this->render(
             'CampaignChainCampaignTemplateBundle::index.html.twig',

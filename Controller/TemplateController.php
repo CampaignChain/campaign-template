@@ -12,6 +12,7 @@ namespace CampaignChain\Campaign\TemplateBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use CampaignChain\CoreBundle\Entity\Campaign;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use CampaignChain\CoreBundle\Entity\Action;
@@ -92,11 +93,17 @@ class TemplateController extends Controller
                     array('id' => $campaign->getId())) . '">' . $campaign->getName() . '</a> was created successfully.'
             );
 
-            return $this->redirectToRoute('campaignchain_core_campaign');
+            if ($this->getRequest()->isXmlHttpRequest()) {
+                return new JsonResponse(array(
+                    'step' => 2
+                ));
+            } else {
+                return $this->redirectToRoute('campaignchain_core_campaign');
+            }
         }
 
         return $this->render(
-            'CampaignChainCoreBundle:Base:new.html.twig',
+            $this->getRequest()->isXmlHttpRequest() ? 'CampaignChainCoreBundle:Base:new_modal.html.twig' : 'CampaignChainCoreBundle:Base:new.html.twig',
             array(
                 'page_title' => 'New ' . static::CAMPAIGN_DISPLAY_NAME,
                 'form' => $form->createView(),

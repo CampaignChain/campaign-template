@@ -55,6 +55,8 @@ file that was distributed with this source code.
         <thead>
         <tr>
             <th>Name</th>
+            <th>Description</th>
+            <th>Execution</th>
             <th></th>
         </tr>
         </thead>
@@ -63,7 +65,9 @@ file that was distributed with this source code.
             <tr class="
                             {% if campaign.status == "paused" %}text-muted {% endif %}
                             ">
-                <td>{{ campaign.name }}</td>
+                <td>{{ campaign|campaignchain_tpl_teaser }}</td>
+                <td width="40%">{{ campaign.description }}</td>
+                <td>{{ campaign|campaignchain_tpl_trigger_hook_inline }}</td>
                 <td align="center">
                     <a class="btn btn-primary"
                        href="{{ path('campaignchain_core_campaign_edit',{'id':campaign.id}) }}">

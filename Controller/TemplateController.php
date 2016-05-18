@@ -185,6 +185,7 @@ class TemplateController extends Controller
         $campaignService = $this->get('campaignchain.core.campaign');
         $campaign = $campaignService->getCampaign($id);
         $campaign->setName($data['name']);
+        $campaign->setDescription($data['description']);
         $campaign->setTimezone($data['timezone']);
 
         $em = $this->getDoctrine()->getManager();

@@ -17,8 +17,13 @@
 
 namespace CampaignChain\Campaign\TemplateBundle;
 
+use CampaignChain\Campaign\TemplateBundle\DependencyInjection\CampaignChainCampaignTemplateExtension;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class CampaignChainCampaignTemplateBundle extends Bundle
 {
+    public function getContainerExtension()
+    {
+        return new CampaignChainCampaignTemplateExtension();
+    }
 }

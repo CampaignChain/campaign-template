@@ -106,7 +106,7 @@ class CopyService
             // Move the cloned campaign to 2012-01-01 (the default date
             // for templates).
             $campaignTemplate = $campaignService->moveCampaign(
-                $campaignTemplate, new \DateTime('2012-01-01'),
+                $campaignTemplate, new \DateTime(Campaign::RELATIVE_START_DATE),
                 Action::STATUS_PAUSED
             );
 

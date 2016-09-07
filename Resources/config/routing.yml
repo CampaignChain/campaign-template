@@ -47,6 +47,8 @@ campaignchain_campaign_template_edit_api:
 campaignchain_campaign_template_plan_timeline_detail:
     pattern:  /campaign/template/plan/timeline/{id}
     defaults: { _controller: CampaignChainCampaignTemplateBundle:Plan:timelineDetail }
+    options:
+        expose: true
 
 campaignchain_campaign_template_plan_timeline_detail_fullscreen:
     pattern:  /campaign/template/plan/timeline/fullscreen/{id}

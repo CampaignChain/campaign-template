@@ -17,6 +17,7 @@
 
 namespace CampaignChain\Campaign\TemplateBundle\Controller;
 
+use CampaignChain\CoreBundle\EntityService\CampaignService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use CampaignChain\CoreBundle\Entity\Campaign;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -120,7 +121,9 @@ class TemplateController extends Controller
 
     public function editAction(Request $request, $id)
     {
+        /** @var CampaignService $campaignService */
         $campaignService = $this->get('campaignchain.core.campaign');
+        /** @var Campaign $campaign */
         $campaign = $campaignService->getCampaign($id);
 
         $campaignType = $this->getCampaignType();
@@ -132,19 +135,36 @@ class TemplateController extends Controller
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
-            $hookService = $this->get('campaignchain.core.hook');
-            $campaign = $hookService->processHooks(static::BUNDLE_NAME, static::MODULE_IDENTIFIER, $campaign, $form);
-            $em->persist($campaign);
+            /*
+             * Check whether all Activities can be executed as part of the
+             * changed campaign.
+             */
+            $isExecutable = $campaignService->isExecutable($campaign);
+            if(!$isExecutable['status']){
+                $this->addFlash(
+                    'warning',
+                    $isExecutable['message']
+                );
 
-            $em->flush();
+                // TODO: https://github.com/CampaignChain/campaignchain/issues/224
+                return $this->redirectToRoute('campaignchain_core_campaign_edit', array(
+                    'id' => $campaign->getId(),
+                ));
+            } else {
+                $hookService = $this->get('campaignchain.core.hook');
+                $campaign = $hookService->processHooks(static::BUNDLE_NAME, static::MODULE_IDENTIFIER, $campaign, $form);
+                $em->persist($campaign);
 
-            $this->addFlash(
-                'success',
-                'Your campaign template <a href="' . $this->generateUrl('campaignchain_core_campaign_edit',
-                    array('id' => $campaign->getId())) . '">' . $campaign->getName() . '</a> was edited successfully.'
-            );
+                $em->flush();
 
-            return $this->redirectToRoute('campaignchain_core_campaign');
+                $this->addFlash(
+                    'success',
+                    'Your campaign template <a href="' . $this->generateUrl('campaignchain_core_campaign_edit',
+                        array('id' => $campaign->getId())) . '">' . $campaign->getName() . '</a> was edited successfully.'
+                );
+
+                return $this->redirectToRoute('campaignchain_core_campaign');
+            }
         }
 
         return $this->render(

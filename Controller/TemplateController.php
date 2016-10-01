@@ -17,6 +17,7 @@
 
 namespace CampaignChain\Campaign\TemplateBundle\Controller;
 
+use CampaignChain\Campaign\TemplateBundle\Validator\TemplateValidator;
 use CampaignChain\CoreBundle\EntityService\CampaignService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use CampaignChain\CoreBundle\Entity\Campaign;
@@ -139,7 +140,9 @@ class TemplateController extends Controller
              * Check whether all Activities can be executed as part of the
              * changed campaign.
              */
-            $isExecutable = $campaignService->isExecutable($campaign);
+            /** @var TemplateValidator $validator */
+            $validator = $this->get('campaignchain.validator.campaign.template');
+            $isExecutable = $validator->hasExecutableActivities($campaign);
             if(!$isExecutable['status']){
                 $this->addFlash(
                     'warning',

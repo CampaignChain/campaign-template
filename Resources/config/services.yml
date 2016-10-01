@@ -19,3 +19,8 @@ services:
     campaignchain.campaign.template.copy:
         class: CampaignChain\Campaign\TemplateBundle\EntityService\CopyService
         arguments: [ @doctrine.orm.entity_manager, @service_container ]
+    campaignchain.validator.campaign.template:
+        class: CampaignChain\Campaign\TemplateBundle\Validator\TemplateValidator
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "@campaignchain.core.activity"

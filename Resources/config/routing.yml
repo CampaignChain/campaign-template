@@ -13,8 +13,11 @@
 # limitations under the License.
 
 campaignchain_campaign_template:
-    pattern:  /campaigns/template
-    defaults: { _controller: CampaignChainCampaignTemplateBundle:Template:index }
+    path:  /campaigns/template
+    defaults:
+        _controller: FrameworkBundle:Redirect:redirect
+        route: campaignchain_core_plan
+        permanent: true
 
 campaignchain_campaign_template_new:
     pattern:  /campaign/template/new

@@ -178,7 +178,6 @@ class TemplateController extends Controller
                 'form' => $form->createView(),
                 'form_submit_label' => 'Save',
                 'campaign' => $campaign,
-                'routes' => $campaign->getCampaignModule()->getRoutes(),
             ));
     }
 
@@ -320,6 +319,14 @@ class TemplateController extends Controller
                         'form' => $form->createView(),
                     ));
 
+                break;
+            case 'campaignchain/campaign-repeating/campaignchain-repeating':
+                $this->addFlash(
+                    'warning',
+                    'Repeating Campaigns cannot be copied as Campaign Templates.'
+                );
+
+                return $this->redirectToRoute('campaignchain_core_campaign');
                 break;
         }
     }

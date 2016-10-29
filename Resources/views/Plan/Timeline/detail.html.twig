@@ -36,8 +36,13 @@ limitations under the License.
 {% endblock %}
 
 {% block bodytabs %}
-    {% set menuItem = knp_menu_get('CampaignChainCampaignTemplateBundle:Builder:detailsTab', [], {'routes': routes}) %}
-    {{ knp_menu_render(menuItem, { 'style': 'tabs' }) }}
+    {{ knp_menu_render(
+    'CampaignChainCoreBundle:CampaignBuilder:detailsTab',
+    {
+        'template': 'CampaignChainCoreBundle:Menu:nav_top.html.twig',
+        'style': 'navbar'
+    }
+    ) }}
 {% endblock %}
 
 {% block body %}

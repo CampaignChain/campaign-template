@@ -20,7 +20,7 @@ namespace CampaignChain\Campaign\TemplateBundle\Validator;
 use CampaignChain\CoreBundle\Entity\Campaign;
 use CampaignChain\CoreBundle\EntityService\ActivityService;
 use CampaignChain\CoreBundle\Validator\AbstractCampaignValidator;
-use Doctrine\ORM\EntityManager;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
  * Class TemplateValidator
@@ -29,18 +29,18 @@ use Doctrine\ORM\EntityManager;
 class TemplateValidator extends AbstractCampaignValidator
 {
     /**
-     * @var EntityManager
+     * @var Registry
      */
     protected $em;
 
     protected $activityService;
 
     public function __construct(
-        EntityManager $em,
+        ManagerRegistry $managerRegistry,
         ActivityService $activityService
     )
     {
-        $this->em = $em;
+        $this->em = $managerRegistry->getManager();
         $this->activityService = $activityService;
     }
 

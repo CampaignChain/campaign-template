@@ -15,12 +15,12 @@
 services:
     campaignchain.campaign.template.hook:
         class: CampaignChain\Campaign\TemplateBundle\EntityService\HookService
-        arguments: [ @doctrine.orm.entity_manager, @service_container ]
+        arguments: [ @doctrine, @service_container ]
     campaignchain.campaign.template.copy:
         class: CampaignChain\Campaign\TemplateBundle\EntityService\CopyService
-        arguments: [ @doctrine.orm.entity_manager, @service_container ]
+        arguments: [ @doctrine, @service_container ]
     campaignchain.validator.campaign.template:
         class: CampaignChain\Campaign\TemplateBundle\Validator\TemplateValidator
         arguments:
-            - "@doctrine.orm.entity_manager"
+            - "@doctrine"
             - "@campaignchain.core.activity"

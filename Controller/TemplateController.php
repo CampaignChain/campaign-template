@@ -19,6 +19,7 @@ namespace CampaignChain\Campaign\TemplateBundle\Controller;
 
 use CampaignChain\Campaign\TemplateBundle\Validator\TemplateValidator;
 use CampaignChain\CoreBundle\EntityService\CampaignService;
+use CampaignChain\CoreBundle\EntityService\HookService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use CampaignChain\CoreBundle\Entity\Campaign;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -84,9 +85,11 @@ class TemplateController extends Controller
                 // We need the campaign ID for storing the hooks. Hence we must flush here.
                 $em->flush();
 
+                /** @var HookService $hookService */
                 $hookService = $this->get('campaignchain.core.hook');
-                $campaign = $hookService->processHooks(static::BUNDLE_NAME, static::MODULE_IDENTIFIER, $campaign, $form,
+                $hookService->processHooks(static::BUNDLE_NAME, static::MODULE_IDENTIFIER, $campaign, $form,
                     true);
+                $campaign = $hookService->getEntity();
 
                 $hookService = $this->get('campaignchain.core.hook');
                 $campaign->setTriggerHook(
@@ -159,8 +162,10 @@ class TemplateController extends Controller
                     'id' => $campaign->getId(),
                 ));
             } else {
+                /** @var HookService $hookService */
                 $hookService = $this->get('campaignchain.core.hook');
-                $campaign = $hookService->processHooks(static::BUNDLE_NAME, static::MODULE_IDENTIFIER, $campaign, $form);
+                $hookService->processHooks(static::BUNDLE_NAME, static::MODULE_IDENTIFIER, $campaign, $form);
+                $campaign = $hookService->getEntity();
                 $em->persist($campaign);
 
                 $em->flush();
@@ -236,9 +241,10 @@ class TemplateController extends Controller
 
             $em->persist($campaign);
 
+            /** @var HookService $hookService */
             $hookService = $this->get('campaignchain.core.hook');
             $hookService->processHooks(static::BUNDLE_NAME, static::MODULE_IDENTIFIER, $campaign, $data);
-
+            $campaign = $hookService->getEntity();
             $em->flush();
 
             $responseData['start_date'] = $campaign->getStartDate()->format(\DateTime::ISO8601);

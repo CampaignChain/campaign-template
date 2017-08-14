@@ -18,13 +18,16 @@
 namespace CampaignChain\Campaign\TemplateBundle\Menu;
 
 use Knp\Menu\FactoryInterface;
-use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class Builder extends ContainerAware
+class Builder implements ContainerAwareInterface
 {
+    use ContainerAwareTrait;
+
     public function detailsTab(FactoryInterface $factory, array $options)
     {
-        $id = $this->container->get('request')->get('id');
+        $id = $this->container->get('request_stack')->getCurrentRequest()->get('id');
 
         $menu = $factory->createItem('root');
 

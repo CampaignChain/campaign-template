@@ -20,6 +20,7 @@ namespace CampaignChain\Campaign\TemplateBundle\Controller;
 use CampaignChain\Campaign\TemplateBundle\Validator\TemplateValidator;
 use CampaignChain\CoreBundle\EntityService\CampaignService;
 use CampaignChain\CoreBundle\EntityService\HookService;
+use CampaignChain\CoreBundle\Form\Type\CampaignType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use CampaignChain\CoreBundle\Entity\Campaign;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -67,9 +68,7 @@ class TemplateController extends Controller
         // All campaign templates start Jan 1st, 2012 midnight.
         $campaign->setStartDate(new \DateTime(Campaign::RELATIVE_START_DATE));
 
-        $campaignType = $this->getCampaignType();
-
-        $form = $this->createForm($campaignType, $campaign);
+        $form = $this->createForm(CampaignType::class, $campaign, $this->getCampaignTypeOptions());
 
         $form->handleRequest($request);
 
@@ -135,9 +134,7 @@ class TemplateController extends Controller
         /** @var Campaign $campaign */
         $campaign = $campaignService->getCampaign($id);
 
-        $campaignType = $this->getCampaignType();
-
-        $form = $this->createForm($campaignType, $campaign);
+        $form = $this->createForm(CampaignType::class, $campaign, $this->getCampaignTypeOptions());
 
         $form->handleRequest($request);
 
@@ -198,10 +195,7 @@ class TemplateController extends Controller
         $campaignService = $this->get('campaignchain.core.campaign');
         $campaign = $campaignService->getCampaign($id);
 
-        $campaignType = $this->getCampaignType();
-        $campaignType->setView('default');
-
-        $form = $this->createForm($campaignType, $campaign);
+        $form = $this->createForm(CampaignType::class, $campaign, $this->getCampaignTypeOptions());
 
         return $this->render(
             'CampaignChainCoreBundle:Campaign:edit_modal.html.twig',
@@ -294,16 +288,15 @@ class TemplateController extends Controller
                 $toCampaign = clone $fromCampaign;
                 $toCampaign->setName($fromCampaign->getName() . ' (copied)');
 
-                $campaignType = $this->getCampaignType();
-                $campaignType->setHooksOptions(
+                $campaignTypeOptions = $this->getCampaignTypeOptions();
+                $campaignTypeOptions['hook_options'] =
                     array(
                         'campaignchain-timespan' => array(
                             'disabled' => true,
                         )
-                    )
-                );
+                    );
 
-                $form = $this->createForm($campaignType, $toCampaign);
+                $form = $this->createForm(CampaignType::class, $toCampaign, $campaignTypeOptions);
 
                 $form->handleRequest($request);
 
@@ -335,16 +328,15 @@ class TemplateController extends Controller
                 $campaignTemplate = clone $scheduledCampaign;
 
                 $campaignTemplate->setName($scheduledCampaign->getName() . ' (copied)');
-                $campaignType = $this->getCampaignType();
-                $campaignType->setHooksOptions(
+                $campaignTypeOptions = $this->getCampaignTypeOptions();
+                $campaignTypeOptions['hook_options'] =
                     array(
                         'campaignchain-timespan' => array(
                             'disabled' => true,
                         )
-                    )
-                );
+                    );
 
-                $form = $this->createForm($campaignType, $campaignTemplate);
+                $form = $this->createForm(CampaignType::class, $campaignTemplate, $campaignTypeOptions);
 
                 $form->handleRequest($request);
 
@@ -381,11 +373,10 @@ class TemplateController extends Controller
         }
     }
 
-    protected function getCampaignType() {
-        $campaignType = $this->get('campaignchain.core.form.type.campaign');
-        $campaignType->setBundleName(static::BUNDLE_NAME);
-        $campaignType->setModuleIdentifier(static::MODULE_IDENTIFIER);
+    protected function getCampaignTypeOptions() {
+        $options['bundle_name'] = static::BUNDLE_NAME;
+        $options['module_identifier'] = static::MODULE_IDENTIFIER;
 
-        return $campaignType;
+        return $options;
     }
 }
